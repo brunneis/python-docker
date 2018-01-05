@@ -24,7 +24,7 @@ ENV PYTHON_VERSION 3.6.4
 RUN \
 	apt-get update && apt-get -y upgrade \
 	&& apt-get -y install \
-		wget \
+        wget \
 	&& apt-get -y build-dep python3.6 \
 	&& wget https://www.python.org/ftp/python/$PYTHON_VERSION/Python-$PYTHON_VERSION.tgz \
 	&& tar xf Python-$PYTHON_VERSION.tgz \
@@ -40,7 +40,7 @@ RUN \
     && ln -s /usr/local/bin/pip3 /usr/bin/pip \
     && pip3 install --upgrade pip \
     && apt-get -y purge \
-		wget \
+        wget \
         autoconf \
         automake \
         autopoint \
