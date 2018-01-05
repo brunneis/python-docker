@@ -22,15 +22,16 @@ MAINTAINER "Rodrigo Martínez" <dev@brunneis.com>
 ENV PYTHON_VERSION 3.6.4
 
 RUN \
-	apt-get update && apt-get -y upgrade \
-	&& apt-get -y install \
+    apt-get update && apt-get -y upgrade \
+    && apt-get -y install \
         wget \
-	&& apt-get -y build-dep python3.6 \
-	&& wget https://www.python.org/ftp/python/$PYTHON_VERSION/Python-$PYTHON_VERSION.tgz \
-	&& tar xf Python-$PYTHON_VERSION.tgz \
-	&& cd Python-$PYTHON_VERSION \
-	&& sed -i 's/$(MAKE) run_profile_task//' Makefile.pre.in \
-	&& ./configure --enable-optimizations \
+        openssl \
+    && apt-get -y build-dep python3.6 \
+    && wget https://www.python.org/ftp/python/$PYTHON_VERSION/Python-$PYTHON_VERSION.tgz \
+    && tar xf Python-$PYTHON_VERSION.tgz \
+    && cd Python-$PYTHON_VERSION \
+    && sed -i 's/$(MAKE) run_profile_task//' Makefile.pre.in \
+    && ./configure --enable-optimizations \
     && make \
     && make install \
     && cd .. \
@@ -38,7 +39,7 @@ RUN \
     && rm Python-$PYTHON_VERSION.tgz \
     && ln -sf /usr/local/bin/python3 /usr/bin/python \
     && ln -s /usr/local/bin/pip3 /usr/bin/pip \
-    && pip3 install --upgrade pip \
+    && pip install --upgrade pip \
     && apt-get -y purge \
         wget \
         autoconf \
@@ -96,7 +97,6 @@ RUN \
         libexpat1 \
         libexpat1-dev \
         libffi-dev \
-        libffi6 \
         libfile-stripnondeterminism-perl \
         libfontconfig1 \
         libfontconfig1-dev \
@@ -148,7 +148,6 @@ RUN \
         libsm6 \
         libsqlite3-dev \
         libssl-dev \
-        libssl1.0.0 \
         libstdc++-6-dev \
         libtcl8.6 \
         libtimedate-perl \
