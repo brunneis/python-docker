@@ -1,4 +1,4 @@
-# Python 2.7 on Ubuntu
+# Python 3 on Ubuntu
 # Copyright (C) 2018 Rodrigo Martínez <dev@brunneis.com>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -13,7 +13,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 FROM ubuntu:18.04
-MAINTAINER "Rodrigo Martínez" <dev@brunneis.com>
 
 ################################################
 # PYTHON
@@ -27,33 +26,32 @@ RUN \
     sed -i 's@# deb-src http://archive.ubuntu.com/ubuntu/ bionic main restricted@deb-src http://archive.ubuntu.com/ubuntu/ bionic main restricted@' /etc/apt/sources.list \
     && apt-get update && apt-get -y upgrade \
     && apt-get -y install \
-        ca-certificates \
-        openssl \
-        libssl1.1 \
+    ca-certificates \
+    openssl \
+    libssl1.1 \
     && dpkg-query -Wf '${Package}\n' | sort > init_pkgs \
     && apt-get -y install \
-        wget \
-        curl \
-    && apt-get -q -y build-dep python2.7 \
+    wget \
+    && apt-get -y build-dep python3.6 \
     && dpkg-query -Wf '${Package}\n' | sort > new_pkgs \
     && wget https://www.python.org/ftp/python/$PYTHON_VERSION/Python-$PYTHON_VERSION.tgz \
     && tar xf Python-$PYTHON_VERSION.tgz \
     && cd Python-$PYTHON_VERSION \
     && sed -i 's/$(MAKE) run_profile_task//' Makefile.pre.in \
-    && ./configure --enable-optimizations \
+    && ./configure --enable-optimizations --with-ensurepip=install \
     && make \
     && make install \
     && cd .. \
     && rm -rf Python-$PYTHON_VERSION \
     && rm Python-$PYTHON_VERSION.tgz \
-    && ln -sf /usr/local/bin/python /usr/bin/python \
-    && curl https://bootstrap.pypa.io/get-pip.py | python - \
+    && ln -sf /usr/local/bin/python3 /usr/bin/python \
+    && ln -s /usr/local/bin/pip3 /usr/bin/pip \
     && pip install --upgrade pip \
     && apt-get -y purge $(diff -u init_pkgs new_pkgs | grep -E "^\+" | cut -d + -f2- | sed -n '1!p') \
     && apt-get clean \
     && rm init_pkgs new_pkgs \
     && rm -rf \
-        /root/.cache/pip \
+    /root/.cache/pip \
     && find / -type d -name __pycache__ -exec rm -r {} \+
 
 ENTRYPOINT ["python"]

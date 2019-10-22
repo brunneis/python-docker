@@ -1,5 +1,5 @@
 # python-docker
-Docker images of Python 3.
+Python 3 Docker images
 
 You can run the latest available image as follows:
 ```bash
