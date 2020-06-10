@@ -1,5 +1,5 @@
 # Python 3 on Ubuntu
-# Copyright (C) 2018 Rodrigo Martínez <dev@brunneis.com>
+# Copyright (C) 2018-2020 Rodrigo Martínez <dev@brunneis.com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -12,7 +12,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-FROM ubuntu:18.04
+FROM ubuntu:20.04
 
 ################################################
 # PYTHON
@@ -23,7 +23,7 @@ ENV DEBIAN_FRONTEND noninteractive
 ENV DEBCONF_NONINTERACTIVE_SEEN true
 
 RUN \
-    sed -i 's@# deb-src http://archive.ubuntu.com/ubuntu/ bionic main restricted@deb-src http://archive.ubuntu.com/ubuntu/ bionic main restricted@' /etc/apt/sources.list \
+    sed -i 's@# deb-src http://archive.ubuntu.com/ubuntu/ focal main restricted@deb-src http://archive.ubuntu.com/ubuntu/ focal main restricted@' /etc/apt/sources.list \
     && apt-get update && apt-get -y upgrade \
     && apt-get -y install \
     ca-certificates \
@@ -32,7 +32,7 @@ RUN \
     && dpkg-query -Wf '${Package}\n' | sort > init_pkgs \
     && apt-get -y install \
     wget \
-    && apt-get -y build-dep python3.6 \
+    && apt-get -y build-dep python3.8 \
     && dpkg-query -Wf '${Package}\n' | sort > new_pkgs \
     && wget https://www.python.org/ftp/python/$PYTHON_VERSION/Python-$PYTHON_VERSION.tgz \
     && tar xf Python-$PYTHON_VERSION.tgz \

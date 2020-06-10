@@ -1,2 +1,2 @@
 #!/bin/bash
-PYTHON_VERSION=3.8.0
+PYTHON_VERSION=3.8.3
