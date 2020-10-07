@@ -19,19 +19,20 @@ FROM ubuntu:20.04
 ################################################
 
 ARG PYTHON_VERSION
-ENV DEBIAN_FRONTEND noninteractive
-ENV DEBCONF_NONINTERACTIVE_SEEN true
+ENV \
+    DEBIAN_FRONTEND=noninteractive \
+    DEBCONF_NONINTERACTIVE_SEEN=true \
+    PYTHONUNBUFFERED=1
 
 RUN \
     sed -i 's@# deb-src http://archive.ubuntu.com/ubuntu/ focal main restricted@deb-src http://archive.ubuntu.com/ubuntu/ focal main restricted@' /etc/apt/sources.list \
     && apt-get update && apt-get -y upgrade \
     && apt-get -y install \
-    ca-certificates \
-    openssl \
-    libssl1.1 \
+        ca-certificates \
+        openssl \
+        libssl1.1 \
     && dpkg-query -Wf '${Package}\n' | sort > init_pkgs \
-    && apt-get -y install \
-    wget \
+    && apt-get -y install wget \
     && apt-get -y build-dep python3.8 \
     && dpkg-query -Wf '${Package}\n' | sort > new_pkgs \
     && wget https://www.python.org/ftp/python/$PYTHON_VERSION/Python-$PYTHON_VERSION.tgz \
